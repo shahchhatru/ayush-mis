@@ -67,7 +67,7 @@ class Subject(models.Model):
 
     year=models.ForeignKey(Year,on_delete=models.CASCADE)
     semester=models.ManyToManyField(Semester)
-    student = models.ManyToManyField(Student) 
+    #student = models.ManyToManyField(Student) 
     
     def __str__(self):
         return self.name
@@ -124,7 +124,7 @@ class Teacher(models.Model):
     email=models.EmailField(max_length=254)
     address=models.CharField(max_length=100)
     phone=models.CharField(max_length=15,unique=True)
-    subject=models.ManyToManyField(Subject)
+    # subject=models.ManyToManyField(Subject)
     def __str__(self):
         return self.name
     

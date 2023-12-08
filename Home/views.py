@@ -400,3 +400,4 @@ def update_routine(request, id):
         'routine': routine
     }
     return render(request, 'update_routine.html', context)
+
