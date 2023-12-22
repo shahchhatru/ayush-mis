@@ -5,14 +5,16 @@ from rest_framework_simplejwt.views import (
 
 from .views import (UserRegistrationView,
 UserLoginView,UserProfileView,UserChangePassword,
-SendPasswordResetEmailView,UserPasswordResetView)
+SendPasswordResetEmailView,UserPasswordResetView,getUsers,getTeacher)
 
 urlpatterns=[
+    path('getuser/',getUsers,name="get_user"),
     path('register/',UserRegistrationView.as_view(),name='register'),
     path('login/',UserLoginView.as_view(),name='login'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('profile/',UserProfileView.as_view(),name="profile"),
     path('changepassword/',UserChangePassword.as_view(),name="change_password"),
     path('send-reset-password-email/',SendPasswordResetEmailView.as_view(),name="send_reset_password_email"),
-    path('reset/<uid>/<token>/',UserPasswordResetView.as_view(),name="send")
+    path('reset/<uid>/<token>/',UserPasswordResetView.as_view(),name="send"),
+    path('getteacher/<tid>',getTeacher,name="get_teacher"),
 ]

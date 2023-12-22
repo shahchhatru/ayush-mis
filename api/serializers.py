@@ -26,7 +26,7 @@ class StudentSerializer(HyperlinkedModelSerializer):
         fields='__all__'
 
 
-class TeacherSerializer(HyperlinkedModelSerializer):
+class TeacherSerializer(ModelSerializer):
     id=ReadOnlyField()
     class Meta:
         model=Teacher
@@ -87,21 +87,24 @@ class AttendanceSerializer(HyperlinkedModelSerializer):
 
 class RoutineSerializer(HyperlinkedModelSerializer):
     teacher = serializers.SlugRelatedField(
-         queryset= Teacher.objects.all(),
-         slug_field='id'
-     )
+        many=True,
+        queryset=Teacher.objects.all(),
+        slug_field='name'
+    )
     subject = serializers.SlugRelatedField(
-         queryset= Subject.objects.all(),
-         slug_field='id'
-     )
+        queryset=Subject.objects.all(),
+        slug_field='name'
+    )
     year = serializers.SlugRelatedField(
-         queryset= Year.objects.all(),
-         slug_field='id'
-     )
+        queryset=Year.objects.all(),
+        slug_field='year'
+    )
     course = serializers.SlugRelatedField(
-         queryset= Course.objects.all(),
-         slug_field='id'
-     )
+        queryset=Course.objects.all(),
+        slug_field='name'
+    )
+
     class Meta:
         model = Routine
         fields = '__all__'
+        

@@ -1,6 +1,20 @@
 from django.db import models
 
 # Create your models here.
+from django.db import models
+#from django.contrib.auth.models import User
+from account.models import User
+
+from datetime import date
+
+# Extending User Model Using a One-To-One Link
+class Profile(models.Model):
+    user = models.OneToOneField(User,null=True,blank=True, on_delete=models.CASCADE)
+    file_user = models.FileField( upload_to='profile/uploaded_files/',null=True,blank=True, max_length=100)
+    
+
+    def __str__(self):
+        return self.user.username
 
 class Department(models.Model):
     name = models.CharField(max_length=250)    
@@ -10,7 +24,7 @@ class Department(models.Model):
 class Year(models.Model):
 
     
-    name=models.CharField( max_length=50,choices=(
+    year=models.CharField( max_length=50,choices=(
         ('1st Year','1st Year'),
         ('2nd Year','2nd Year'),
         ('3rd Year','3rd Year'),
@@ -19,7 +33,7 @@ class Year(models.Model):
         ),unique=True)
 
     def __str__(self):
-        return self.name
+        return self.year
 
     
 class Semester(models.Model):
@@ -66,8 +80,8 @@ class Subject(models.Model):
     name=models.CharField(max_length=100,unique=True)
 
     year=models.ForeignKey(Year,on_delete=models.CASCADE)
-    semester=models.ManyToManyField(Semester)
-    #student = models.ManyToManyField(Student) 
+    # semester=models.ManyToManyField(Semester)
+    # student = models.ManyToManyField(Student) 
     
     def __str__(self):
         return self.name
@@ -119,11 +133,12 @@ class Attendance(models.Model):
 
 
 class Teacher(models.Model):
-
+    user = models.OneToOneField(User,null=True,blank=True, on_delete=models.CASCADE)
     name=models.CharField(max_length=100)
     email=models.EmailField(max_length=254)
     address=models.CharField(max_length=100)
     phone=models.CharField(max_length=15,unique=True)
+    post=models.CharField(max_length=15,blank=True)
     # subject=models.ManyToManyField(Subject)
     def __str__(self):
         return self.name
@@ -147,16 +162,24 @@ class Routine(models.Model):
         ('lab', 'Lab'),
         ('tutorial', 'Tutorial'),
     ]
+    SEASON_CHOICES = [
+        ('winter', 'Winter'),
+        ('summer', 'Summer'),
+        
+    ]
 
     day = models.CharField(max_length=3, choices=DAY_CHOICES)
-    time_start = models.TimeField()
-    time_end = models.TimeField()
+    time_start = models.TimeField(blank=True,null=True)
+    time_end = models.TimeField(blank=True,null=True)
     session_type = models.CharField(max_length=10, choices=SESSION_CHOICES)
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    teacher = models.ManyToManyField(Teacher)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     year = models.ForeignKey(Year, on_delete=models.CASCADE)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     room_number = models.CharField(max_length=50)
+    season=models.CharField(max_length=10, choices=SEASON_CHOICES,default="summer")
+    starting_period_value=models.CharField(max_length=10,blank=True)
+    no_of_period_value=models.CharField(max_length=10,blank=True)
 
     def __str__(self):
-        return f"{self.teacher} - {self.subject} - {self.day} {self.time_start}-{self.time_end} ({self.session_type})"
+        return f"{self.year} - {self.subject} - {self.day} {self.time_start}-{self.time_end} ({self.session_type})"

@@ -1,9 +1,29 @@
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.utils.encoding import smart_str,force_bytes,DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_decode,urlsafe_base64_encode
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from account.models import User
 from .utils import Util
+
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        
+        token['name'] = user.name
+        token['tc']=user.tc
+
+        return token
+
+        
+
+class UserViewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=User
+        fields='__all__'
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
     password2=serializers.CharField(style={
