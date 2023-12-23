@@ -12,6 +12,7 @@ from .renderers import UserRenderer
 from .models import User
 from api.models import *
 from api.serializers import *
+from rest_framework import viewsets
 ##Generates token manually 
 def get_tokens_for_user(user):
     refresh=MyTokenObtainPairSerializer.get_token(user)
@@ -24,6 +25,7 @@ def get_tokens_for_user(user):
 
 # Create your views here.
 class UserRegistrationView(APIView):
+    #queryset=User.objects.all()
     # serializer_class=[MyTokenObtainPairSerializer]
     #renderer_classes=[UserRenderer]
     def post(self,request,format=None):
@@ -57,6 +59,19 @@ def getUsers(request):
     users=User.objects.all()
     serializer=UserViewSerializer(users,many=True)
     return Response(serializer.data)
+
+@api_view(['GET'])
+def getUserHome(request):
+    data = {
+        '/user/register': 'User Registration',
+        '/user/login': 'User Login',
+        '/user/token': 'Token Generation',
+        '/user/token/refresh/': 'Refresh Token',
+        '/user/changepassword': 'Change Password',
+        '/user/send-reset-password-email/':'Send Reset Email',
+        '/user/getteacher/id':'Get teacher associated to a User by Id'
+    }
+    return Response(data)
 
 
 class UserProfileView(APIView):

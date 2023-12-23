@@ -55,8 +55,8 @@ class Semester(models.Model):
 class Course(models.Model): 
 
     name=models.CharField(max_length=100)
-    department = models.ForeignKey(Department, on_delete=models.CASCADE)
-    year=models.ManyToManyField(Year)    
+    #department = models.ForeignKey(Department, on_delete=models.CASCADE)
+    #year=models.ManyToManyField(Year)    
     
     def __str__(self):
         return self.name
@@ -79,7 +79,7 @@ class Subject(models.Model):
 
     name=models.CharField(max_length=100,unique=True)
 
-    year=models.ForeignKey(Year,on_delete=models.CASCADE)
+    #year=models.ForeignKey(Year,on_delete=models.CASCADE)
     # semester=models.ManyToManyField(Semester)
     # student = models.ManyToManyField(Student) 
     
@@ -134,9 +134,9 @@ class Attendance(models.Model):
 
 class Teacher(models.Model):
     user = models.OneToOneField(User,null=True,blank=True, on_delete=models.CASCADE)
-    name=models.CharField(max_length=100)
-    email=models.EmailField(max_length=254)
-    address=models.CharField(max_length=100)
+    name=models.CharField(max_length=100,)
+    email=models.EmailField(max_length=254,unique=True)
+    address=models.CharField(max_length=100,null=True,blank=True)
     phone=models.CharField(max_length=15,unique=True)
     post=models.CharField(max_length=15,blank=True)
     # subject=models.ManyToManyField(Subject)
@@ -176,10 +176,11 @@ class Routine(models.Model):
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     year = models.ForeignKey(Year, on_delete=models.CASCADE)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    room_number = models.CharField(max_length=50)
+    room_number = models.CharField(max_length=50,blank=True)
     season=models.CharField(max_length=10, choices=SEASON_CHOICES,default="summer")
     starting_period_value=models.CharField(max_length=10,blank=True)
     no_of_period_value=models.CharField(max_length=10,blank=True)
+    year_part=models.CharField(max_length=10,blank=True)
 
     def __str__(self):
         return f"{self.year} - {self.subject} - {self.day} {self.time_start}-{self.time_end} ({self.session_type})"

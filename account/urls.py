@@ -1,13 +1,15 @@
-from django.urls import path
+from django.urls import path,include
 from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
-from .views import (UserRegistrationView,
+from .views import (UserRegistrationView,getUserHome,
 UserLoginView,UserProfileView,UserChangePassword,
 SendPasswordResetEmailView,UserPasswordResetView,getUsers,getTeacher)
 
+
 urlpatterns=[
+    path('',getUserHome,name='user_home'),
     path('getuser/',getUsers,name="get_user"),
     path('register/',UserRegistrationView.as_view(),name='register'),
     path('login/',UserLoginView.as_view(),name='login'),
