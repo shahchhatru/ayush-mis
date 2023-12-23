@@ -33,3 +33,12 @@ pipenv run python manage.py runserver
 
 ```
 
+## if error occurs 
+
+#### remove the Pipfile and Pipfile.lock
+
+and then use any python virtual environment management pakage like pipenv or venv or poetry
+
+## example using only pip
+
+pip install -r requirements.txt
