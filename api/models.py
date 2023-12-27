@@ -172,7 +172,7 @@ class Routine(models.Model):
     time_start = models.TimeField(blank=True,null=True)
     time_end = models.TimeField(blank=True,null=True)
     session_type = models.CharField(max_length=10, choices=SESSION_CHOICES)
-    teacher = models.ManyToManyField(Teacher)
+    teacher = models.ManyToManyField(Teacher,blank=True)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     year = models.ForeignKey(Year, on_delete=models.CASCADE)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
@@ -181,6 +181,7 @@ class Routine(models.Model):
     starting_period_value=models.CharField(max_length=10,blank=True)
     no_of_period_value=models.CharField(max_length=10,blank=True)
     year_part=models.CharField(max_length=10,blank=True)
+    section=models.CharField(max_length=10,blank=True,null=True)
 
     def __str__(self):
         return f"{self.year} - {self.subject} - {self.day} {self.time_start}-{self.time_end} ({self.session_type})"

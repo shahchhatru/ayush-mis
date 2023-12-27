@@ -358,6 +358,21 @@ class RoutineViewSet(viewsets.ModelViewSet):
 
         serializer = self.get_serializer(routines, many=True)
         return Response(serializer.data)
+
+    @action(detail=False, methods=['GET'])
+    def get_routines_by_Year_and_section(self, request):
+        year_id = request.query_params.get('year_id')
+        year_part = request.query_params.get('year_part')
+        section= request.query_params.get('section')
+
+        routines = Routine.objects.filter(
+           year_id=year_id,
+           year_part=year_part,
+           section=section
+        )
+
+        serializer = self.get_serializer(routines, many=True)
+        return Response(serializer.data)
     # For example: /api/routines/get_routines_by_teacher/?teacher_id=1
     @action(detail=False, methods=['GET'])
     def get_routines_by_teacher(self, request):
