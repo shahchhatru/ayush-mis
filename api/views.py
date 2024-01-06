@@ -299,7 +299,8 @@ class RoutineViewSet(viewsets.ModelViewSet):
 
         if overlapping_routines.exists():
             return Response(
-                {'detail': 'The room is already allocated to another teacher for the same day and time.'},
+                {
+                    'detail': 'The room is already allocated to another teacher for the same day and time.'},
                 status=status.HTTP_400_BAD_REQUEST
             )
         
@@ -330,17 +331,22 @@ class RoutineViewSet(viewsets.ModelViewSet):
 
         if overlapping_routines_teacher.exists():
             return Response(
-                {'detail': 'A routine with the same teacher, day, and overlapping time already exists.'},
+                {'error':{'detail': 'A routine with the same teacher, day, and overlapping time already exists.'
+                }
+                },
                 status=status.HTTP_400_BAD_REQUEST
             )
+        else:
+            serializer = self.get_serializer(data=data_copy)
+            serializer.is_valid(raise_exception=True)
+            self.perform_create(serializer)
+            headers = self.get_success_headers(serializer.data)
+
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
 
             
-        serializer = self.get_serializer(data=data_copy)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        
 
 
         
@@ -400,17 +406,35 @@ class RoutineViewSet(viewsets.ModelViewSet):
     
     # For example: /api/routines/get_routines_by_course_and_year/?course_id=3&year=4
     @action(detail=False, methods=['GET'])
-    def get_routines_by_course_and_year(self, request):
+    def get_routines_by_course_and_year_section_part(self, request):
         course_id = request.query_params.get('course_id')
         year = request.query_params.get('year')
+        year_part = request.query_params.get('year_part')
+        section= request.query_params.get('section')
 
         routines = Routine.objects.filter(
             course_id=course_id,
-            year=year
+            year=year,
+            year_part=year_part,
+            section=section,
+
         )
 
         serializer = self.get_serializer(routines, many=True)
         return Response(serializer.data)
+
+    @action(detail=False, methods=['GET'])
+    def get_routines_by_course_and_year(self, request):
+        course_id = request.query_params.get('course_id')
+        year = request.query_params.get('year')
+        routines = Routine.objects.filter(
+            course_id=course_id,
+            year=year,
+        )
+
+        serializer = self.get_serializer(routines, many=True)
+        return Response(serializer.data)
+
 
 
 
