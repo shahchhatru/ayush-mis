@@ -16,6 +16,7 @@ router.register(r'attendances',views.AttendanceViewSet)
 router.register(r'routines', views.RoutineViewSet)
 
 
+
 urlpatterns = [
     
     # path('', views.getRoutes,name='routes'),
