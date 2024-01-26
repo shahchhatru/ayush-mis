@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-i75vtz8l5%&tul*qm8d6^5#wrcj6cl#6u06+45rfm9wvlb5#7b
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.vercel.app']
+ALLOWED_HOSTS = ['.vercel.app','127.0.0.1']
 
 
 # Application definition
@@ -55,10 +55,10 @@ INSTALLED_APPS = [
     
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173',
-    '.vercel.app'
-]
+# CORS_ALLOWED_ORIGINS = [
+#     'http://localhost:5173',
+    
+# ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
@@ -223,10 +223,11 @@ SIMPLE_JWT = {
 
 PASSWORD_RESET_TIMEOUT = 900
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    "http://localhost:5173",
-]
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:3000",
+#     "http://127.0.0.1:3000",
+#     "http://localhost:5173",
+# ]
 
+CORS_ALLOW_ALL_ORIGINS=True
 
